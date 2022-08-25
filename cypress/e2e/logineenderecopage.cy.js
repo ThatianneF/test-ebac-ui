@@ -12,7 +12,28 @@ describe('Fazer login', () => {
         cy.get('#password').type('teste@teste.com')
         cy.get('.woocommerce-form > .button').click()
     });
-    it.only('Atualizar endereço' , () => {
+
+    it('Deve fazer login com sucesso', () => {
+        cy.get('#username').type('aluno_ebac@teste.com')
+        cy.get('#password').type('teste@teste.com')
+        cy.get('.woocommerce-form > .button').click()
+    });
+
+    it('Deve exibir uma mensagem de erro ao inserir usuario inválido', () => {
+        cy.get('#username').type('gkuhgkhj')
+        cy.get('#password').type('teste@teste.com')
+        cy.get('.woocommerce-form > .button').click()
+        cy.get('.woocommerce-message').should('contain', 'Endereço de e-mail desconhecido.')
+    });
+
+    it('Deve exibir uma mensagem de erro ao inserir senha inválida', () => {
+        cy.get('#username').type('aluno_ebac@teste.com')
+        cy.get('#password').type('xxxxxx')
+        cy.get('.woocommerce-form > .button').click()
+        cy.get('.woocommerce-message').should('contain', 'Erro: a senha fornecida para o e-mail aluno_ebac@teste.com está incorreta. Perdeu a senha?.')
+    });
+
+    it('Atualizar endereço', () => {
         cy.get('.woocommerce-MyAccount-navigation-link--edit-address > a').click()
         cy.get(':nth-child(1) > .title > .edit').click()
         cy.get('#select2-billing_country-container').click().type('Brasil')
